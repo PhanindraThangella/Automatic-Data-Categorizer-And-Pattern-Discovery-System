@@ -1,0 +1,198 @@
+<html>
+  <head>
+    <title>Data Presenter</title>
+    <!-- <link href="style.css" rel="stylesheet"> -->
+    <script>
+      async function sendData() 
+      {
+        let inputData = document.getElementById("inputField").value;
+        if(inputData=="")
+        {
+          alert("Please Provide an Link!.");
+        }
+        else
+        {
+          document.getElementById("loadingPopup").style.display="flex";
+          fetch('/predict', {  // Send request to /predict
+            method: 'POST', 
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user_input: inputData }) // Send as JSON
+          })
+          .then(response => {
+            if (response.redirected) {
+              window.location.href = response.url;  // Redirect to result page
+            } else {
+              return response.json();  // Handle JSON response if needed
+            }
+          })
+          .catch(error => console.error("Error:", error));
+        }
+        }
+    </script>
+  </head>
+  <style>
+    body {
+    font-family: 'Poppins', sans-serif;
+    color: #1B1B1B;
+    text-align: center;
+    padding: 40px;
+    /* background-color: #D9AFD9;  */
+    /* background-image: linear-gradient(0deg, #ff38ff 0%, #3cf2ff 100%); */
+    background: linear-gradient(to bottom, #A7C7E7, #F4A698, #B5EAD7);
+    /* background-image: linear-gradient(0deg, #D9AFD9 0%, #97D9E1 100%); */
+    /* background-color: #4158D0; */
+    /* background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%); */
+    }
+    .main_head
+    {
+    text-align:center;
+    font-size:40px;
+    margin-top:40px;
+    /* font-size: 3rem;
+    font-weight: bold;
+    color: #1B1B1B;*/
+    /* text-transform: uppercase; */
+    letter-spacing: 2px;
+    }
+    .main_search{
+    height:250px;
+    width:100%;
+    /* background-color:blue; */
+    }
+    .main_search input
+    {
+    height:50px;
+    /* width: 600px; */
+    margin-top:140px;
+    margin-left:100px;
+    margin-right:0px;
+    width: 50%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 2px solid #1B1B1B;
+    border-radius: 8px;
+    outline: none;
+    }
+    .main_search button{
+    height:40px;
+    width:100px;
+    border-radius:10px;
+    font-size:18px;
+    font-weight:bold;
+    color:white;
+    background-color:black;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    /* transition: transform 0.3s ease, box-shadow 0.3s ease; */
+    /* background-image: linear-gradient(to right, #283048 0%, #859398  51%, #283048  100%) */
+    }
+    .main_search button:hover{
+        transform: scale(1.1) translateY(-5px);
+        box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+    }
+    .main_footer{
+    text-align:center;
+    font-size:20px;
+    }
+    h2{
+      color:#2E2E2E ;
+      font-size:40px;
+      margin-top:100px;
+      /* font-size: 1.8rem;
+      font-weight: 600;
+        color: #2E2E2E;  */
+    }
+    #loadingPopup
+    {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgb(255, 255, 255,0.5); /* Semi-transparent background */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: Black;
+      font-size: 24px;
+      font-weight: bold;
+      display: none; /* Initially hidden */
+      z-index: 1000;
+    }
+    .loader-container 
+    {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    .loading-text {
+        font-size: 60px;
+        font-weight: bold;
+        color:black;
+    }
+
+    .dots::after {
+        content: '';
+        display: inline-block;
+        width: 1em;
+        text-align: left;
+        animation: dots 1.5s steps(4, end) infinite;
+    }
+
+    @keyframes dots {
+        0%, 20% {
+            content: '';
+        }
+        40% {
+            content: '.';
+        }
+        60% {
+            content: '..';
+        }
+        80%, 100% {
+            content: '...';
+        }
+    }
+    .head1, .head3, .head5, .head7, .head9, .head11, .head13, .head15, 
+.head17, .head19, .head21, .head23 {
+    font-size: 90px;
+    font-weight: bold;
+    color: #1B1B1B; /* Dark Charcoal */
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5); /* Soft shadow */
+    margin: 0px;
+    padding: 0px;
+}
+
+.head2, .head4, .head6, .head8, .head10, .head12, .head14, .head16, 
+.head18, .head20, .head22, .head24 {
+    font-size: 90px;
+    font-weight: bold;
+    color: #FAE3D9; /* Light Champagne */
+    text-shadow: 0px 0px 10px rgba(250, 227, 217, 0.4); /* Glow effect */
+    margin: 0px;
+    padding: 0px;
+}
+
+  </style>
+  <body>
+    <div id="loadingPopup">
+      <div class="loader-container">
+        <div class="loading-text">Loading<span class="dots"></span></div>
+      </div>
+    </div>
+    <div class="main_head">
+      <span class="head1">A</span><span class="head2">u</span><span class="head3">t</span><span class="head4">o</span><span class="head5">m</span><span class="head6">a</span><span class="head7">t</span><span class="head8">i</span><span class="head9">c</span>
+      <span class="head10">D</span><span class="head11">a</span><span class="head12">t</span><span class="head13">a</span>
+      <span class="head14">C</span><span class="head15">a</span><span class="head16">t</span><span class="head17">e</span><span class="head18">g</span><span class="head19">o</span><span class="head20">r</span><span class="head21">i</span><span class="head22">z</span><span class="head23">e</span><span class="head24">r</span>
+    </div>
+    <div class="main_search">
+      <input type=text id="inputField" placeholder="Enter Your Product URL">
+      <button onclick="sendData()">Analyze</button>
+    </div> 
+    <div class="main_footer">
+      <h2>We Provide you with Valuable insights about Products</h2>
+      <h3>You Can Find UnBiased And Clear Representation Of Reviews To Enhance Your Experience</h3> 
+    </div>
+   </body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<head>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="mainframe">
+<div class="chartdiv"><canvas id="myChart"></canvas></div>
+<div class="slogan"><h1 id="slogan"></h1></div>
+</div>
+<div class="comments" >
+  <div class="positive_comments">
+    <h1 class="cardheading">Positive Comments</h1>
+    <ul id="positivelist"></ul>
+  </div>
+  <div class="Suggestion_comments">
+   <h1 class="cardheading">Suggestions Comments</h1>
+   <ul id="suggestionlist"></ul>
+  </div>
+  <div class="Negative_comments">
+   <h1 class="cardheading">Negative Comments</h1>
+   <ul id="negativelist"></ul>
+  </div>
+</div>
+<style>
+body{
+  /* padding: 25px; */
+  background-color: #00238c;
+  background-image: url("https://www.transparenttextures.com/patterns/asfalt-light.png");
+/* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
+/* background-color: #00238c; */
+/* background-image: url("https://www.transparenttextures.com/patterns/black-linen.png"); */
+/* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
+}
+.mainframe
+{
+  /* background-color: #00238c; */
+  /* background-image: url("https://www.transparenttextures.com/patterns/asfalt-light.png"); */
+  width:100%;
+  height:705px;
+}
+    /* .title {
+      color: #5C6AC4;
+    } */
+#myChart{
+  width:1100px !important;
+  height:500px !important;
+}
+.chartdiv {
+  height:560px;
+  /* background-color:#b8c0ff; */
+  width:800px;
+  margin-left:150px;
+}
+.comments
+{
+  display:flex;
+  flex-direction: row;
+  margin-left:10px;
+}
+.slogan{
+  /* background-color: blue; */
+  width:760px;
+  margin:auto;
+  color:white;
+}
+.positive_comments
+{
+  background-color:#A7C7E7  ;
+  height:800px;
+  width:400px;
+  border-left: 5px solid #000000;
+  border-right: 5px solid #000000;
+  padding: 20px;
+  border-radius: 20px;
+  font-size: 22px;
+  color: #FAFAFA;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+li {
+    padding: 10px; /* Add some spacing */
+    margin: 5px 0; /* Space between list items */
+    border-radius: 5px; /* Optional: Rounded corners */
+}
+.positive_comments li{
+  color:#1B1B1B;
+}
+.Suggestion_comments li{
+  color:#2E2E2E;
+}
+.Negative_comments li{
+  color:#243D30;
+}
+li::marker{
+  color: black;
+}
+.positive_comments::-webkit-scrollbar {
+    display: none; /* Hides scrollbar in Chrome, Safari */
+}
+.Suggestion_comments
+{
+  background-color:#F4A698;
+  margin-left:20px;
+  height:800px;
+  width:400px;
+  border-left: 5px solid #000000;
+  border-right: 5px solid #000000;
+  padding:20px;
+  border-radius: 20px;
+  font-size: 22px;
+  color: #FAFAFA;
+  overflow-y: auto;
+  overflow-x: hidden; 
+}
+.Suggestion_comments::-webkit-scrollbar {
+    display: none; /* Hides scrollbar in Chrome, Safari */
+}
+.Negative_comments
+{
+  background-color:#B5EAD7;
+  margin-left:20px;
+  height:800px;
+  width:400px;
+  border-left: 5px solid #000000;
+  border-right: 5px solid #000000;
+  padding: 20px;
+  border-radius: 20px;
+  font-size: 22px;
+  color: #FAFAFA;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.Negative_comments::-webkit-scrollbar {
+    display: none; /* Hides scrollbar in Chrome, Safari */
+}
+.cardheading{
+  text-align:center;
+  color:#2E2E2E;
+  font-size: 36px;
+}
+</style>
+<script>
+     let data = JSON.parse('{{ data | tojson | safe }}'); // Ensures proper escaping
+      // Convert JSON string to JavaScript array
+        // Loop through the array and add items to the list
+      console.log(data);
+        let p =0, s =0, n =0;
+    data.forEach(item => {
+        if (item[0] === "positive") 
+        { 
+          let ol=document.getElementById("positivelist");
+          let li=document.createElement("li");
+          li.textContent=item[1];
+          ol.appendChild(li);
+          p++;
+        }
+        else if (item[0] === "negative")
+        {
+          let ol=document.getElementById("negativelist");
+          let li=document.createElement("li");
+          li.textContent=item[1];
+          ol.appendChild(li);
+          n++;
+        } 
+        else if (item[0] === "suggestion")
+        {
+          let ol=document.getElementById("suggestionlist");
+          let li=document.createElement("li");
+          li.textContent="its better to add color";
+          li.textContent=item[1];
+          ol.appendChild(li);
+          s++;
+        }
+    });
+    if(p>n && p>s)
+    {
+      document.getElementById("slogan").textContent="Your Product Has A Positive Impact In The Market";
+    }
+    else if(n>p && n>s)
+    {
+      document.getElementById("slogan").textContent="Please Check Once Before You Proceed With The Product,As It Doesn't Meet Expectations";
+    }
+    else
+    {
+      document.getElementById("slogan").textContent="Product Needs Improvements,We Can Expect In Future But Not Sure";
+    }
+    const xValues = ["Positive","Negative","Suggestion"];
+    const yValues = [p,n,s];
+    const barColors = [
+      "#A7C7E7",
+      "#F4A698",
+      "#B5EAD7"
+    ];
+    
+    new Chart("myChart", {
+      type: "pie",
+      data: {
+        labels: xValues,
+        datasets: [{
+          backgroundColor: barColors,
+          data: yValues
+        }]
+      },
+      options: {
+        title: {
+          display: true,
+          text: "Reviews Category Distribution",
+          fontSize:30,
+          fontColor:'white'
+        },
+        devicePixelRatio: 2,
+        legend: {
+                labels: {
+                    fontColor: 'white',
+                    fontSize:16
+                }
+      }
+    }
+    });
+    </script>
+</body>
+</html>
